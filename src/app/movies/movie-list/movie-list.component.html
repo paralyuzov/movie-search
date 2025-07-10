@@ -1,0 +1,59 @@
+<div class="p-8 max-w-xl mx-auto flex flex-col gap-4">
+  <p-floatlabel variant="on">
+    <input
+      pInputText
+      id="on_label"
+      #test
+      autocomplete="off"
+      class="w-full"
+      (keyup.enter)="onSearch(test.value)"
+    />
+    <label for="on_label">Search Movies</label>
+  </p-floatlabel>
+  <p-button
+    label="Search IMDB Movies"
+    severity="primary"
+    [outlined]="true"
+    styleClass="w-full"
+    (click)="onSearch(test.value)"
+  />
+</div>
+
+@if(loading$ | async) {
+<div class="text-center p-8">
+  <p-progress-spinner ariaLabel="loading" />
+</div>
+} @else { @if(movies$ | async; as movies) { @if(movies.length > 0) {
+<div
+  class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-8"
+>
+  @for (movie of movies; track movie.imdbID) {
+  <div>
+    <p-card [style]="{ width: '100%', overflow: 'hidden' }">
+      <ng-template #header>
+        <img
+          [alt]="movie.Title"
+          class="w-96 h-96 object-cover mx-auto"
+          [src]="movie.Poster"
+        />
+      </ng-template>
+      <ng-template #title>{{ movie.Title }}</ng-template>
+      <ng-template #subtitle>{{ movie.Year }} • {{ movie.Type }}</ng-template>
+      <p>IMDb ID: {{ movie.imdbID }}</p>
+      <ng-template #footer>
+        <p-button
+          (click)="viewDetails(movie.imdbID)"
+          label="View Details"
+          class="w-full"
+          styleClass="w-full"
+        />
+      </ng-template>
+    </p-card>
+  </div>
+  }
+</div>
+} @else {
+<div class="flex items-center justify-center p-8">
+  <p>No movies found. Please try a different search.</p>
+</div>
+} } }
