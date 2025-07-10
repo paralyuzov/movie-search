@@ -2,11 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, finalize } from 'rxjs';
 import { Movie, MovieDetails, MovieResponse } from '../models/Movies';
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
 export class MoviesService {
-  private BASE_URL = 'http://www.omdbapi.com/?apikey=9be706fe&';
+  private BASE_URL = `http://www.omdbapi.com/?apikey=${environment.omdbApiKey}&`;
   private movies = new BehaviorSubject<Movie[] | null>(null);
   private error = new BehaviorSubject<string | null>(null);
   private loading = new BehaviorSubject<boolean>(false);
