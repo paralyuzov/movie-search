@@ -1,0 +1,12 @@
+<div class="flex justify-between items-center p-4 text-white border-b border-white">
+  <a [routerLink]="['/']">
+  <h1 class="text-3xl font-mono">Movie Search</h1>
+  </a>
+  <p-button
+    (click)="navigate()"
+    label="Watchlist"
+    severity="primary"
+    [outlined]="true"
+    styleClass="w-80px"
+  ></p-button>
+</div>
