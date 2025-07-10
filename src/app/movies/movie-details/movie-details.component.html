@@ -1,0 +1,54 @@
+@if(error$ | async ; as error) {
+<div class="flex items-center justify-center p-8">
+  {{ error }}
+</div>
+} @if(loading$ | async) {
+<div class="flex items-center justify-center p-8">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+} @else { @if((currentMovie$ | async) ; as movie) {
+<div class="flex items-center justify-center p-8 max-w-2xl mx-auto">
+  <p-card [style]="{ width: '100%', overflow: 'hidden', }">
+    <ng-template #header>
+      <img
+        [alt]="movie.Title"
+        class="w-full h-96 object-cover"
+        [src]="movie.Poster"
+      />
+    </ng-template>
+    <ng-template #title>{{ movie.Title }}</ng-template>
+
+    <ng-template #subtitle>{{ movie.Year }} • {{ movie.Type }}</ng-template>
+
+    <div class="flex flex-col gap-2">
+      <p><strong>Plot:</strong> {{ movie.Plot }}</p>
+      <p><strong>Director:</strong> {{ movie.Director }}</p>
+      <p><strong>Genre: </strong>{{ movie.Genre }}</p>
+      <p><strong>Actors: </strong>{{ movie.Actors }}</p>
+      <p><strong>IMDB Rating: </strong>{{ movie.imdbRating }} / 10 ⭐</p>
+      <strong>Raitings: </strong>
+      @for(rating of movie.Ratings;track rating.Source) {
+      <p>{{ rating.Source }}:{{ rating.Value }}</p>
+      }
+    </div>
+    <ng-template #footer>
+      <div class="flex gap-4 mt-1">
+        <p-button
+          (click)="addToWatchList(movie)"
+          label="Add to Watchlist"
+          severity="secondary"
+          class="w-full"
+          [outlined]="true"
+          styleClass="w-full"
+        />
+        <p-button
+          (click)="goBack()"
+          label="Go Back"
+          class="w-full"
+          styleClass="w-full"
+        />
+      </div>
+    </ng-template>
+  </p-card>
+</div>
+} }
