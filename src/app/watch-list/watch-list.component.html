@@ -1,0 +1,65 @@
+<div class="container mx-auto">
+  <div class="mt-2">
+    <p-button
+      (click)="goBack()"
+      icon="pi pi-angle-left"
+      label="Back"
+      size="large"
+      severity="primary"
+    ></p-button>
+  </div>
+  @if((watchList$ | async)?.length === 0) {
+  <div class="flex items-center justify-center p-8">
+    <p>
+      No movies in your watch list. Please add some movies to your watch list.
+    </p>
+  </div>
+  } @else {
+  <h2 class="text-3xl text-center mt-2">Your Watch List</h2>
+  <div
+    class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8"
+  >
+    @for(movie of watchList$ | async; track movie.imdbID) {
+    <div class="">
+      <p-card [style]="{ width: '100%' ,overflow: 'hidden', }">
+        <ng-template #header>
+          <img
+            [alt]="movie.Title"
+            class="w-full h-96 object-cover"
+            [src]="movie.Poster"
+          />
+        </ng-template>
+        <ng-template #title>{{ movie.Title }}</ng-template>
+
+        <ng-template #subtitle>{{ movie.Year }} • {{ movie.Type }}</ng-template>
+
+        <div class="flex flex-col gap-2">
+          <p><strong>Plot:</strong> {{ movie.Plot }}</p>
+          <p><strong>Director:</strong> {{ movie.Director }}</p>
+          <p><strong>Genre: </strong>{{ movie.Genre }}</p>
+          <p><strong>Actors: </strong>{{ movie.Actors }}</p>
+          <p><strong>IMDB Rating: </strong>{{ movie.imdbRating }} / 10 ⭐</p>
+          <strong>Raitings: </strong>
+          @for(rating of movie.Ratings;track rating.Source) {
+          <p class="bg-white/10 text-sky-200 p-1 rounded-md text-sm">{{ rating.Source }}: {{ rating.Value }}</p>
+          }
+        </div>
+        <ng-template #footer>
+          <div class="flex gap-4 mt-1">
+            <p-button
+              (click)="removeFromWatchList(movie)"
+              label="Remove"
+              icon="pi pi-trash"
+              severity="danger"
+              class="w-full"
+              [outlined]="true"
+              styleClass="w-full"
+            />
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+    }
+  </div>
+  }
+</div>
